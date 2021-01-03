@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorConstant {
+  static const Color purple = const Color(0xff57369D);
   static const Color beige = const Color(0xfff6f6db);
   static const Color darkGreyBlue = const Color(0xff2e3d74);
   static const Color charcoal = const Color(0xff3c3c3b);
@@ -15,5 +16,4 @@ class ColorConstant {
   static const Color greyWhite = Color(0xffCCCCCC);
   static const Color appBlack = Color(0xff333333);
   static const Color warmGrey = Color(0xff979797);
-  
 }

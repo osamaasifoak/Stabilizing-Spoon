@@ -1,4 +1,5 @@
 class AssetConstant {
+  static const String splash = 'assets/splash.png';
   static const String onboarding_1 = 'assets/on-boarding-1.webp';
   static const String onboarding_2 = 'assets/on-boarding-2.webp';
   static const String onboarding_3 = 'assets/on-boarding-3.webp';

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:react/components/text_component.dart';
+import 'package:react/constants/assets/assets_constants.dart';
+import 'package:react/constants/colors/colors_constants.dart';
+import 'package:react/constants/styles/font_styles_constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,9 +36,19 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              '',
+            Image.asset(AssetConstant.splash),
+            TextComponent(
+              text: "REACT",
+              textAlign: TextAlign.center,
+              textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                  fontSize: 80, color: ColorConstant.purple, letterSpacing: 3),
             ),
+            TextComponent(
+              text: "You're eating partner",
+              textAlign: TextAlign.center,
+              textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                  fontSize: 26, color: ColorConstant.purple, letterSpacing: 3),
+            )
           ],
         ),
       ),

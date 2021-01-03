@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/colors/colors_constants.dart';
@@ -61,9 +60,8 @@ class SimpleAppBarComponent extends StatelessWidget
                         ),
                         TextComponent(
                           text: title,
-                          textStyle:
-                              FontStyles.heeboNormalCustomFonSizetWithW500(
-                                  color: ColorConstant.paleGrey, fontSize: 17.0),
+                          textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                              color: ColorConstant.paleGrey, fontSize: 17.0),
                         ),
                       ],
                     ),
@@ -80,7 +78,7 @@ class SimpleAppBarComponent extends StatelessWidget
                   padding: const EdgeInsets.only(left: 23, top: 8),
                   child: TextComponent(
                     text: subtile,
-                    textStyle: FontStyles.heeboNormalCustomFonSizetWithW500(
+                    textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
                         color: ColorConstant.paleGrey,
                         fontSize: 10.0,
                         fontWeight: FontWeight.w300),

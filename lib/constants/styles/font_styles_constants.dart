@@ -14,12 +14,12 @@ class FontStyles {
           letterSpacing: letterSpacing,
           fontSize: fontSize);
 
-  static TextStyle heeboNormalCustomFonSizetWithW500(
+  static TextStyle patuaOneCustomFonSizeAndWeight(
           {@required Color color,
           double letterSpacing = 0.0,
           double fontSize = 12.0,
           FontWeight fontWeight = FontWeight.w500}) =>
-      GoogleFonts.heebo(
+      GoogleFonts.patuaOne(
           color: color,
           fontWeight: fontWeight,
           fontStyle: FontStyle.normal,
