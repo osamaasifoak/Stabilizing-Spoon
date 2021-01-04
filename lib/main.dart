@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/assets/assets_constants.dart';
 import 'package:react/constants/colors/colors_constants.dart';
+import 'package:react/constants/routes/routes_constants.dart';
+import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
+import 'package:react/routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,6 +21,9 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: (RouteSettings settings) {
+        return onGenerateRoutes(settings);
+      },
       home: SplashScreen(),
     );
   }
@@ -30,6 +36,14 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 5), () {
+      Navigator.pushNamed(context, RouteConstants.onboarding);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -38,13 +52,13 @@ class _SplashScreenState extends State<SplashScreen> {
           children: <Widget>[
             Image.asset(AssetConstant.splash),
             TextComponent(
-              text: "REACT",
+              text: StringConstant.react.toUpperCase(),
               textAlign: TextAlign.center,
               textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
                   fontSize: 80, color: ColorConstant.purple, letterSpacing: 3),
             ),
             TextComponent(
-              text: "You're eating partner",
+              text: StringConstant.eatingPartner,
               textAlign: TextAlign.center,
               textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
                   fontSize: 26, color: ColorConstant.purple, letterSpacing: 3),
