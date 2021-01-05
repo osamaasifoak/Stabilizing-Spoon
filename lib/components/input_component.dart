@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:react/constants/colors/colors_constants.dart';
@@ -54,22 +53,21 @@ class TextInputComponent extends StatelessWidget {
         },
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          labelText: title,
-          fillColor: fillColor,
-          filled: filled,
-          suffixIcon: SizedBox(),
-          labelStyle:
-              FontStyles.heeboNormalF12WithW400(color: ColorConstant.bluegrey),
-          enabledBorder: new OutlineInputBorder(
-            borderRadius: new BorderRadius.circular(24.0),
-            borderSide: new BorderSide(color: ColorConstant.paleGrey),
-          ),
-          focusedBorder: new OutlineInputBorder(
-                          borderRadius: new BorderRadius.circular(24.0),
-                          borderSide: new BorderSide(
-                            color: ColorConstant.paleGrey,
-                          ))
-        ),
+            labelText: title,
+            fillColor: fillColor,
+            filled: filled,
+            suffixIcon: SizedBox(),
+            labelStyle:
+                FontStyles.heeboNormalF12WithW400(color: ColorConstant.purple),
+            enabledBorder: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(24.0),
+              borderSide: new BorderSide(color: ColorConstant.paleGrey),
+            ),
+            focusedBorder: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(24.0),
+                borderSide: new BorderSide(
+                  color: ColorConstant.paleGrey,
+                ))),
         cursorColor: ColorConstant.darkGreyBlue,
         style: TextStyle(
           fontSize: 14.0,
