@@ -3,6 +3,7 @@ import 'package:react/components/button_component.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/assets/assets_constants.dart';
 import 'package:react/constants/colors/colors_constants.dart';
+import 'package:react/constants/routes/routes_constants.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/uiUtils/size_config.dart';
@@ -47,7 +48,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 ],
               ),
             ),
-            // Flexible(child: Spacer()),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -72,12 +72,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     color: ColorConstant.white,
                     letterSpacing: 3,
                     fontWeight: FontWeight.normal),
-                onPressed: () => {},
+                onPressed: () =>
+                    {Navigator.pushNamed(context, RouteConstants.login)},
                 color: ColorConstant.purple,
                 border: 10,
               ),
             ),
-            // Flexible(child: Spacer()),
           ],
         ),
       ),
