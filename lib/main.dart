@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/assets/assets_constants.dart';
 import 'package:react/constants/colors/colors_constants.dart';
@@ -29,6 +32,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Directory documentsDirectory;
+
+    getApplicationDocumentsDirectory().then(
+        (value) => {
+          documentsDirectory = value,
+         print(documentsDirectory)});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
