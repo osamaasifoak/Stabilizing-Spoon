@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/assets/assets_constants.dart';
 import 'package:react/constants/colors/colors_constants.dart';
