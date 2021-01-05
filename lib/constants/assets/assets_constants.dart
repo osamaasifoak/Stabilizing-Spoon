@@ -1,8 +1,8 @@
 class AssetConstant {
   static const String splash = 'assets/splash.png';
-  static const String onboarding_1 = 'assets/on-boarding-1.webp';
-  static const String onboarding_2 = 'assets/on-boarding-2.webp';
-  static const String onboarding_3 = 'assets/on-boarding-3.webp';
+  static const String onboarding_1 = 'assets/on-boarding-1.png';
+  static const String onboarding_2 = 'assets/on-boarding-2.png';
+  static const String onboarding_3 = 'assets/on-boarding-3.png';
   static const String hanging_short = 'assets/hanging-short.webp';
   static const String booking = 'assets/booking.svg';
   static const String bookingSelected = 'assets/booking-s.svg';

@@ -1,5 +1,6 @@
 class StringConstant {
-  static const String butler = "Butler";
+  static const String react = "React";
+  static const String eatingPartner = "You're eating partner";
   static const String login = "Login";
   static const String signup = "Sign Up";
   static const String continueText = "Continue";
