@@ -47,7 +47,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       letterSpacing: 3),
                 ),
                 SizedBox(
-                  height: 72,
+                  height: 40,
+                ),
+                TextComponent(
+                  text: "Please " + StringConstant.login,
+                  textAlign: TextAlign.center,
+                  textStyle: FontStyles.loraCustomFonSizeAndWeight(
+                      fontSize: 16,
+                      color: ColorConstant.purple,
+                      letterSpacing: 5),
+                ),
+                SizedBox(
+                  height: 30,
                 ),
                 TextInputComponent(
                   title: StringConstant.fullName,
@@ -81,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 16.0),
                 ),
                 SizedBox(
-                  height: 24,
+                  height: 16,
                 ),
                 Align(
                   alignment: Alignment.centerRight,
@@ -97,13 +108,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 24,
                 ),
-                TextComponent(
-                  text: StringConstant.signup,
-                  textAlign: TextAlign.center,
-                  textStyle: FontStyles.loraCustomFonSizeAndWeight(
-                      fontSize: 16,
-                      color: ColorConstant.purple,
-                      letterSpacing: 5),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteConstants.signup);
+                  },
+                  child: TextComponent(
+                    text: StringConstant.signup,
+                    textAlign: TextAlign.center,
+                    textStyle: FontStyles.loraCustomFonSizeAndWeight(
+                        fontSize: 16,
+                        color: ColorConstant.purple,
+                        letterSpacing: 5),
+                  ),
                 ),
               ],
             ),

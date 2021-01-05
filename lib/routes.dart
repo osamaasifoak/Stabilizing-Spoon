@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:react/views/auth/login.dart';
+import 'package:react/views/auth/signup.dart';
 import 'package:react/views/on_boarding/on_boarding_view.dart';
 import 'constants/routes/routes_constants.dart';
 
@@ -9,6 +10,8 @@ onGenerateRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => OnBoardingView());
     case RouteConstants.login:
       return MaterialPageRoute(builder: (_) => LoginScreen());
+    case RouteConstants.signup:
+      return MaterialPageRoute(builder: (_) => SignupScreen());
     default:
   }
 }
