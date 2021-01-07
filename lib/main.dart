@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/assets/assets_constants.dart';
@@ -7,7 +8,9 @@ import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/routes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
