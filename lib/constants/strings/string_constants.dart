@@ -8,6 +8,7 @@ class StringConstant {
   static const String signup = "Sign Up";
     static const String email = "Email";
     static const String password = "Password";
+    static const String resetPassword = "Reset Password";
    static const String forgotPassword = "Forgot Password?";
   static const String continueText = "Continue";
   static const String cart = "Cart";

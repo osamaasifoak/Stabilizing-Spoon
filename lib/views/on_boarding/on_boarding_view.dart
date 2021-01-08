@@ -4,8 +4,10 @@ import 'package:react/components/text_component.dart';
 import 'package:react/constants/assets/assets_constants.dart';
 import 'package:react/constants/colors/colors_constants.dart';
 import 'package:react/constants/routes/routes_constants.dart';
+import 'package:react/constants/strings/share_preferences_constant.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
+import 'package:react/services/shared_preferences_services.dart';
 import 'package:react/uiUtils/size_config.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -72,8 +74,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     color: ColorConstant.white,
                     letterSpacing: 3,
                     fontWeight: FontWeight.normal),
-                onPressed: () =>
-                    {Navigator.pushNamed(context, RouteConstants.login)},
+                onPressed: () async => {
+                  await SharedPreferenceService().addStringInSF(
+                      SharedPreferenceConstant.isFirstTime, "true"),
+                  Navigator.pushNamed(context, RouteConstants.login),
+                },
                 color: ColorConstant.purple,
                 border: 10,
               ),

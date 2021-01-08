@@ -8,6 +8,7 @@ class RouteConstants {
   static const String splashScreen = 'splashScreen';
   static const String otpVerification = 'otpVerification';
   static const String homeScreen = 'homeScreen';
+  static const String forgotPassword = 'forgotPassword';
   static const String bottomBarScreen = 'bottomBarScreen';
   static const String messageScreen = 'messageScreen';
   static const String bookingScreen = 'bookingScreen';

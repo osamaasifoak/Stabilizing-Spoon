@@ -4,12 +4,15 @@ import 'package:react/components/button_component.dart';
 import 'package:react/components/input_component.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/colors/colors_constants.dart';
+import 'package:react/constants/strings/share_preferences_constant.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/services/firebase_services.dart';
+import 'package:react/services/shared_preferences_services.dart';
 import 'package:react/uiUtils/loading.dart';
 import 'package:react/uiUtils/size_config.dart';
 import 'package:react/uiUtils/snackbar.dart';
+import 'package:react/views/home.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -94,6 +97,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   ButtonComponent(
                     onPressed: () async {
+                      print(
+                        await SharedPreferenceService()
+                            .getStringInSF(SharedPreferenceConstant.user),
+                      );
                       LoaderConstant.loadingpopups(context);
                       if (_formKey.currentState.validate()) {
                         var res = await FirebaseServices().register(
@@ -103,16 +110,24 @@ class _SignupScreenState extends State<SignupScreen> {
                           SnackbarConstant.showInSnackBar(
                               'The password provided is too weak.',
                               _scaffoldKey);
+                          Navigator.pop(context);
                         } else if (res == 'email-already-in-use') {
                           SnackbarConstant.showInSnackBar(
                               'The account already exists for that email.',
                               _scaffoldKey);
+                          Navigator.pop(context);
+                        } else if (res.user.uid != "") {
+                          await SharedPreferenceService().addStringInSF(
+                              SharedPreferenceConstant.user,
+                              res.user.email.toString());
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => Home()),
+                              (Route<dynamic> route) => false);
+                        } else {
+                          SnackbarConstant.showInSnackBar(
+                              'Something went wrong.', _scaffoldKey);
                         }
-                      } else {
-                        SnackbarConstant.showInSnackBar(
-                            'Something went wrong.', _scaffoldKey);
                       }
-                      Navigator.pop(context);
                     },
                     buttonText: StringConstant.signup,
                     color: ColorConstant.purple,

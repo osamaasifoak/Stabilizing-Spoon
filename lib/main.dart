@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:react/components/text_component.dart';
@@ -7,6 +8,7 @@ import 'package:react/constants/routes/routes_constants.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/routes.dart';
+import 'package:react/services/firebase_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,11 +40,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushNamed(context, RouteConstants.onboarding);
+    FirebaseServices().signOut();
+    Future.delayed(Duration(seconds: 3), () {
+      if (user != null) {
+        Navigator.pushNamed(context, RouteConstants.homeScreen);
+      } else {
+        Navigator.pushNamed(context, RouteConstants.onboarding);
+      }
     });
   }
 
