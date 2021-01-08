@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:react/components/button_component.dart';
 import 'package:react/components/input_component.dart';
 import 'package:react/components/text_component.dart';
-import 'package:react/constants/assets/assets_constants.dart';
 import 'package:react/constants/colors/colors_constants.dart';
 import 'package:react/constants/routes/routes_constants.dart';
 import 'package:react/constants/strings/string_constants.dart';
@@ -15,13 +14,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _fullNameTextEditingConrtroller;
-  TextEditingController _mobileNumberTextEditingConrtroller;
+  TextEditingController _emailTextEditingConrtroller;
+  TextEditingController _passwordTextEditingConrtroller;
   @override
   void initState() {
     super.initState();
-    _fullNameTextEditingConrtroller = new TextEditingController();
-    _mobileNumberTextEditingConrtroller = new TextEditingController();
+    _emailTextEditingConrtroller = new TextEditingController();
+    _passwordTextEditingConrtroller = new TextEditingController();
   }
 
   @override
@@ -61,8 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 30,
                 ),
                 TextInputComponent(
-                  title: StringConstant.fullName,
-                  controller: _fullNameTextEditingConrtroller,
+                  title: StringConstant.email,
+                  controller: _emailTextEditingConrtroller,
                   fillColor: ColorConstant.paleGrey,
                   filled: true,
                 ),
@@ -70,8 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 16,
                 ),
                 TextInputComponent(
-                  title: StringConstant.mobileNumber,
-                  controller: _mobileNumberTextEditingConrtroller,
+                  title: StringConstant.password,
+                  controller: _passwordTextEditingConrtroller,
                   fillColor: ColorConstant.paleGrey,
                   filled: true,
                 ),

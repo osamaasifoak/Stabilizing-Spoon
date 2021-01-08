@@ -53,21 +53,31 @@ class TextInputComponent extends StatelessWidget {
         },
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-            labelText: title,
-            fillColor: fillColor,
-            filled: filled,
-            suffixIcon: SizedBox(),
-            labelStyle:
-                FontStyles.heeboNormalF12WithW400(color: ColorConstant.purple),
-            enabledBorder: new OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(24.0),
-              borderSide: new BorderSide(color: ColorConstant.paleGrey),
+          labelText: title,
+          fillColor: fillColor,
+          filled: filled,
+          suffixIcon: SizedBox(),
+          labelStyle:
+              FontStyles.heeboNormalF12WithW400(color: ColorConstant.purple),
+          enabledBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(24.0),
+            borderSide: new BorderSide(color: ColorConstant.paleGrey),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(24.0),
+            borderSide: new BorderSide(color: ColorConstant.paleGrey),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(24.0),
+            borderSide: new BorderSide(color: ColorConstant.paleGrey),
+          ),
+          focusedBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(24.0),
+            borderSide: new BorderSide(
+              color: ColorConstant.paleGrey,
             ),
-            focusedBorder: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(24.0),
-                borderSide: new BorderSide(
-                  color: ColorConstant.paleGrey,
-                ))),
+          ),
+        ),
         cursorColor: ColorConstant.darkGreyBlue,
         style: TextStyle(
           fontSize: 14.0,
