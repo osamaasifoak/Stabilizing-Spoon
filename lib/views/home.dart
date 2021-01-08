@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:react/components/button_component.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/colors/colors_constants.dart';
 import 'package:react/constants/routes/routes_constants.dart';
@@ -6,6 +8,7 @@ import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/uiUtils/size_config.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,13 +16,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  DateTime selectedDate = new DateTime.now();
   List<_SalesData> data = [
-    _SalesData('Jan', 35),
-    _SalesData('Feb', 28),
-    _SalesData('Mar', 34),
-    _SalesData('Apr', 32),
-    _SalesData('May', 40)
+    _SalesData('Jan-2020', 35),
+    _SalesData('Feb-2020', 28),
+    _SalesData('Mar-2020', 34),
+    _SalesData('Apr-2020', 32),
+    _SalesData('May-2020', 40)
   ];
+  Future<Null> _selectDate(BuildContext context) async {
+    showMonthPicker(
+      context: context,
+      firstDate: DateTime(DateTime.now().year - 1, 5),
+      lastDate: DateTime(DateTime.now().year + 1, 9),
+      initialDate: selectedDate,
+      locale: Locale("en"),
+    ).then((date) {
+      if (date != null) {
+        setState(() {
+          selectedDate = DateFormat('yyyy-MM').format(date.toString());
+        });
+        print(selectedDate);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -83,6 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     dataLabelSettings: DataLabelSettings(isVisible: true))
               ],
             ),
+            SizedBox(
+              height: 24,
+            ),
             // Padding(
             //   padding: const EdgeInsets.all(8.0),
             //   //Initialize the spark charts widget
@@ -101,6 +125,22 @@ class _HomeScreenState extends State<HomeScreen> {
             //   ),
             // )
           ]),
+        ),
+      ),
+      floatingActionButton: SizedBox(
+        width: 120,
+        child: ButtonComponent(
+          onPressed: () async {
+            _selectDate(context);
+          },
+          buttonText: StringConstant.selectDate,
+          color: ColorConstant.purple,
+          border: 20,
+          textStyle: FontStyles.loraCustomFonSizeAndWeight(
+              color: ColorConstant.white,
+              letterSpacing: 0.2,
+              fontWeight: FontWeight.w400,
+              fontSize: 14.0),
         ),
       ),
     );

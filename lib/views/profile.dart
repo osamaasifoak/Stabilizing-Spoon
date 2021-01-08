@@ -1,10 +1,11 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:react/components/button_component.dart';
 import 'package:react/components/input_component.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/colors/colors_constants.dart';
-import 'package:react/constants/routes/routes_constants.dart';
 import 'package:react/constants/strings/share_preferences_constant.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
@@ -13,6 +14,7 @@ import 'package:react/services/shared_preferences_services.dart';
 import 'package:react/uiUtils/loading.dart';
 import 'package:react/uiUtils/size_config.dart';
 import 'package:react/uiUtils/snackbar.dart';
+import 'package:path/path.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -25,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   GlobalKey<FormState> _formKey;
   GlobalKey<ScaffoldState> _scaffoldKey;
   User _user = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
     super.initState();
@@ -99,13 +102,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                TextComponent(
-                  text: "change profile photo",
-                  textAlign: TextAlign.center,
-                  textStyle: FontStyles.loraCustomFonSizeAndWeight(
-                      fontSize: 14,
-                      color: ColorConstant.purple,
-                      letterSpacing: 2),
+                InkWell(
+                  onTap: () async {
+                    FilePickerResult _imageFile =
+                        await FilePicker.platform.pickFiles(
+                      type: FileType.image,
+                    );
+                    String fileName = basename(_imageFile.files[0].path);
+                    FirebaseStorage.instance.ref().child(fileName);
+                  },
+                  child: TextComponent(
+                    text: "change profile photo",
+                    textAlign: TextAlign.center,
+                    textStyle: FontStyles.loraCustomFonSizeAndWeight(
+                        fontSize: 14,
+                        color: ColorConstant.purple,
+                        letterSpacing: 2),
+                  ),
                 ),
                 SizedBox(
                   height: 30,
