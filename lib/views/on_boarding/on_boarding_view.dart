@@ -10,12 +10,12 @@ import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/services/shared_preferences_services.dart';
 import 'package:react/uiUtils/size_config.dart';
 
-class OnBoardingView extends StatefulWidget {
+class OnBoardingScreen extends StatefulWidget {
   @override
-  _OnBoardingViewState createState() => _OnBoardingViewState();
+  _OnBoardingScreenState createState() => _OnBoardingScreenState();
 }
 
-class _OnBoardingViewState extends State<OnBoardingView> {
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int pageIndex = 0;
   final pageController = PageController(initialPage: 0);
   @override

@@ -5,6 +5,7 @@ class StringConstant {
   static const String onboarding_2 = "We are here to help you because  we understand your problem.";
   static const String onboarding_3 = "We are here to maintain your record, So check your stats on one click.";
   static const String login = "Login";
+  static const String saveChanges = "Save Changes";
   static const String signup = "Sign Up";
     static const String email = "Email";
     static const String password = "Password";

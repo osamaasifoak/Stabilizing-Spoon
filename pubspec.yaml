@@ -36,6 +36,7 @@ dependencies:
   firebase_core: ^0.5.3
   owesome_validator: ^0.0.5
   shared_preferences: ^0.5.12+4
+  syncfusion_flutter_charts: ^18.4.33
   
 dev_dependencies:
   flutter_test:
