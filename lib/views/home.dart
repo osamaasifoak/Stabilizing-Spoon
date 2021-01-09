@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:react/components/button_component.dart';
@@ -6,9 +9,11 @@ import 'package:react/constants/colors/colors_constants.dart';
 import 'package:react/constants/routes/routes_constants.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
+import 'package:react/models/spoon_value_model.dart';
 import 'package:react/uiUtils/size_config.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,6 +22,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = new DateTime.now();
+  final databaseReference = FirebaseDatabase.instance.reference();
+  List<double> _crossHair = [];
   List<_SalesData> data = [
     _SalesData('Jan-2020', 35),
     _SalesData('Feb-2020', 28),
@@ -34,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ).then((date) {
       if (date != null) {
         setState(() {
-          selectedDate = DateFormat('yyyy-MM').format(date.toString());
+          // selectedDate = DateFormat('yyyy-MM').format(date.toString());
         });
         print(selectedDate);
       }
@@ -107,6 +114,68 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 24,
             ),
+            StreamBuilder(
+              stream: databaseReference.child("spoon_value").onValue,
+              builder: (context, AsyncSnapshot snapshot) {
+                SpoonValues _spoonValue;
+                if (snapshot.hasData &&
+                    !snapshot.hasError &&
+                    snapshot.data.snapshot.value != null) {
+                  DataSnapshot _spoonSnapshot = snapshot.data.snapshot;
+                  _spoonValue = new SpoonValues.fromJson(_spoonSnapshot.value);
+                }
+                _crossHair.add(double.parse(_spoonValue.x));
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextComponent(
+                          text: "X-AXIS: " + _spoonValue.x.toString(),
+                          textAlign: TextAlign.left,
+                          textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                              fontSize: 25,
+                              color: ColorConstant.purple,
+                              letterSpacing: 3),
+                        ),
+                        TextComponent(
+                          text: "Y-AXIS: " + _spoonValue.y.toString(),
+                          textAlign: TextAlign.left,
+                          textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                              fontSize: 25,
+                              color: ColorConstant.purple,
+                              letterSpacing: 3),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      child: SfCircularChart(
+                        // Enables the tooltip for all the series in chart
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: [
+                          // Initialize line series
+                          PieSeries<_SalesData, String>(
+                              // Enables the tooltip for individual series
+                              enableTooltip: true,
+                              dataSource: [
+                                // Bind data source
+                                _SalesData('x', double.parse(_spoonValue.x), color: ColorConstant.purple),
+                                _SalesData('y', double.parse(_spoonValue.y), color: ColorConstant.warmGrey),
+                              ],
+                              pointColorMapper: (_SalesData sales, _) =>
+                                  sales.color,
+                              xValueMapper: (_SalesData sales, _) => sales.year,
+                              yValueMapper: (_SalesData sales, _) =>
+                                  sales.sales),
+                              
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+
             // Padding(
             //   padding: const EdgeInsets.all(8.0),
             //   //Initialize the spark charts widget
@@ -148,8 +217,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _SalesData {
-  _SalesData(this.year, this.sales);
+  _SalesData(this.year, this.sales, {this.color});
 
   final String year;
   final double sales;
+  final Color color;
 }
