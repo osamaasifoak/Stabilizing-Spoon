@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
@@ -21,8 +22,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String stringJson;
   DateTime selectedDate = new DateTime.now();
   final databaseReference = FirebaseDatabase.instance.reference();
+  User _user = FirebaseAuth.instance.currentUser;
   List<double> _crossHair = [];
   List<_SalesData> data = [
     _SalesData('Jan-2020', 35),
@@ -91,26 +94,44 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             //Initialize the chart widget
-            SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              // Chart title
-              title: ChartTitle(text: 'Your daily stats'),
-              // Enable legend
-              legend: Legend(isVisible: true),
-              // Enable tooltip
-              tooltipBehavior: TooltipBehavior(enable: true),
-              series: <ChartSeries<_SalesData, String>>[
-                LineSeries<_SalesData, String>(
-                    dataSource: data,
-                    xValueMapper: (_SalesData sales, _) => sales.year,
-                    yValueMapper: (_SalesData sales, _) => sales.sales,
-                    name: 'Sales',
-                    isVisibleInLegend: false,
-                    color: ColorConstant.purple,
-                    // Enable data label
-                    dataLabelSettings: DataLabelSettings(isVisible: true))
-              ],
-            ),
+            StreamBuilder(
+                stream: databaseReference
+                    .child(_user.uid)
+                    .child(selectedDate.year.toString())
+                    .child(selectedDate.month.toString())
+                    .onValue,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      !snapshot.hasError &&
+                      snapshot.data.snapshot.value != null) {
+                    DataSnapshot _spoonSnapshot = snapshot.data.snapshot;
+                    Map<dynamic, dynamic> data = _spoonSnapshot.value;
+                    data.forEach((key, value) {
+                      var x = json.decode(value["user_data"]);
+                      print(x);
+                    });
+                  }
+                  return SfCartesianChart(
+                    primaryXAxis: CategoryAxis(),
+                    // Chart title
+                    title: ChartTitle(text: 'Your daily stats'),
+                    // Enable legend
+                    legend: Legend(isVisible: true),
+                    // Enable tooltip
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    series: <ChartSeries<_SalesData, String>>[
+                      LineSeries<_SalesData, String>(
+                          dataSource: data,
+                          xValueMapper: (_SalesData sales, _) => sales.year,
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          name: 'Sales',
+                          isVisibleInLegend: false,
+                          color: ColorConstant.purple,
+                          // Enable data label
+                          dataLabelSettings: DataLabelSettings(isVisible: true))
+                    ],
+                  );
+                }),
             SizedBox(
               height: 24,
             ),
@@ -123,6 +144,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     snapshot.data.snapshot.value != null) {
                   DataSnapshot _spoonSnapshot = snapshot.data.snapshot;
                   _spoonValue = new SpoonValues.fromJson(_spoonSnapshot.value);
+                  stringJson = "{\"month\":" +
+                      selectedDate.month.toString() +
+                      ",\"year\":\"" +
+                      selectedDate.year.toString() +
+                      "\",\"date\":\"" +
+                      selectedDate.day.toString() +
+                      "\",\"x\":\"" +
+                      _spoonValue.x.toString() +
+                      "\",\"y\":\"" +
+                      _spoonValue.y.toString() +
+                      "\",\"date_time\":\"" +
+                      selectedDate.toString() +
+                      "\"}";
+                  databaseReference
+                      .child(_user.uid.toString())
+                      .child(selectedDate.year.toString())
+                      .child(selectedDate.month.toString())
+                      .push()
+                      .set({"user_data": stringJson});
                 }
                 _crossHair.add(double.parse(_spoonValue.x));
                 return Column(
@@ -159,15 +199,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               enableTooltip: true,
                               dataSource: [
                                 // Bind data source
-                                _SalesData('x', double.parse(_spoonValue.x), color: ColorConstant.purple),
-                                _SalesData('y', double.parse(_spoonValue.y), color: ColorConstant.warmGrey),
+                                _SalesData('x', double.parse(_spoonValue.x),
+                                    color: ColorConstant.purple),
+                                _SalesData('y', double.parse(_spoonValue.y),
+                                    color: ColorConstant.warmGrey),
                               ],
                               pointColorMapper: (_SalesData sales, _) =>
                                   sales.color,
                               xValueMapper: (_SalesData sales, _) => sales.year,
                               yValueMapper: (_SalesData sales, _) =>
                                   sales.sales),
-                              
                         ],
                       ),
                     ),
