@@ -14,7 +14,6 @@ import 'package:react/models/spoon_value_model.dart';
 import 'package:react/uiUtils/size_config.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -26,16 +25,17 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = new DateTime.now();
   final databaseReference = FirebaseDatabase.instance.reference();
   User _user = FirebaseAuth.instance.currentUser;
-  List<double> _crossHair = [];
-  List<_SalesData> data = [
-    _SalesData('Jan-2020', 35),
-    _SalesData('Feb-2020', 28),
-    _SalesData('Mar-2020', 34),
-    _SalesData('Apr-2020', 32),
-    _SalesData('May-2020', 40)
+  // List<double> _crossHair = [];
+  List<SpoonValues> _todayStats = [];
+  List<_SalesData> chartsData = [
+    // _SalesData('Jan-2020', 35),
+    // _SalesData('Feb-2020', 28),
+    // _SalesData('Mar-2020', 34),
+    // _SalesData('Apr-2020', 32),
+    // _SalesData('May-2020', 40)
   ];
   Future<Null> _selectDate(BuildContext context) async {
-    showMonthPicker(
+    showDatePicker(
       context: context,
       firstDate: DateTime(DateTime.now().year - 1, 5),
       lastDate: DateTime(DateTime.now().year + 1, 9),
@@ -43,8 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
       locale: Locale("en"),
     ).then((date) {
       if (date != null) {
+        // String test;
         setState(() {
-          // selectedDate = DateFormat('yyyy-MM').format(date.toString());
+          selectedDate = date;
         });
         print(selectedDate);
       }
@@ -94,44 +95,73 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             //Initialize the chart widget
-            StreamBuilder(
-                stream: databaseReference
-                    .child(_user.uid)
-                    .child(selectedDate.year.toString())
-                    .child(selectedDate.month.toString())
-                    .onValue,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      !snapshot.hasError &&
-                      snapshot.data.snapshot.value != null) {
-                    DataSnapshot _spoonSnapshot = snapshot.data.snapshot;
-                    Map<dynamic, dynamic> data = _spoonSnapshot.value;
-                    data.forEach((key, value) {
-                      var x = json.decode(value["user_data"]);
-                      print(x);
-                    });
+            FutureBuilder(
+              future: databaseReference
+                  .child(_user.uid)
+                  .child(selectedDate.year.toString())
+                  .child(selectedDate.month.toString())
+                  .once(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData &&
+                    !snapshot.hasError &&
+                    snapshot.data.value != null) {
+                  // DataSnapshot _spoonSnapshot = snapshot.data.value;
+                  Map<dynamic, dynamic> data = snapshot.data.value;
+                  double sumXvalues = 0.0;
+                  double sumYvalues = 0.0;
+                  int count = 0;
+                  chartsData.clear();
+                  data.forEach((key, value) {
+                    var temp = json.decode(value["user_data"]);
+                    if (selectedDate.day == int.parse(temp["date"])) {
+                      sumXvalues = sumXvalues + double.parse(temp["x"]);
+                      sumYvalues = sumYvalues + double.parse(temp["y"]);
+                      count = ++count;
+                    }
+                    print(count);
+                  });
+                  if (count != 0) {
+                    chartsData
+                        .add(_SalesData("x", ((sumXvalues / count) * 100)));
+                    chartsData.add(_SalesData(
+                        "stable point", ((sumXvalues - sumYvalues))));
+                    chartsData
+                        .add(_SalesData("y", ((sumYvalues / count) * 100)));
+                  } else {
+                    chartsData.add(_SalesData("x", 0));
+                    chartsData.add(_SalesData("stable point", 0));
+                    chartsData.add(_SalesData("y", 0));
                   }
-                  return SfCartesianChart(
-                    primaryXAxis: CategoryAxis(),
-                    // Chart title
-                    title: ChartTitle(text: 'Your daily stats'),
-                    // Enable legend
-                    legend: Legend(isVisible: true),
-                    // Enable tooltip
-                    tooltipBehavior: TooltipBehavior(enable: true),
-                    series: <ChartSeries<_SalesData, String>>[
-                      LineSeries<_SalesData, String>(
-                          dataSource: data,
-                          xValueMapper: (_SalesData sales, _) => sales.year,
-                          yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Sales',
-                          isVisibleInLegend: false,
-                          color: ColorConstant.purple,
-                          // Enable data label
-                          dataLabelSettings: DataLabelSettings(isVisible: true))
-                    ],
-                  );
-                }),
+                }
+                return SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  // Chart title
+                  title: ChartTitle(
+                      text: 'Your stats of: ' +
+                          selectedDate.day.toString() +
+                          '-' +
+                          selectedDate.month.toString() +
+                          '-' +
+                          selectedDate.year.toString()),
+                  // Enable legend
+                  legend: Legend(isVisible: true),
+                  // Enable tooltip
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  series: <ChartSeries<_SalesData, String>>[
+                    LineSeries<_SalesData, String>(
+                        dataSource: chartsData,
+                        xValueMapper: (_SalesData sales, _) => sales.year,
+                        yValueMapper: (_SalesData sales, _) => sales.sales,
+                        // pointColorMapper: ,
+                        name: 'Stats',
+                        isVisibleInLegend: false,
+                        color: ColorConstant.purple,
+                        // Enable data label
+                        dataLabelSettings: DataLabelSettings(isVisible: true))
+                  ],
+                );
+              },
+            ),
             SizedBox(
               height: 24,
             ),
@@ -164,7 +194,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       .push()
                       .set({"user_data": stringJson});
                 }
-                _crossHair.add(double.parse(_spoonValue.x));
                 return Column(
                   children: [
                     Row(

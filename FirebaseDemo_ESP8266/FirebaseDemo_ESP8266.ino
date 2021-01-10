@@ -23,8 +23,8 @@
 // Set these to run example.
 #define FIREBASE_HOST "react-cb858-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "U7Z1NKCzeAV7Om8Ki9lgNDQypbDOnrNyL0z7nJLH"
-#define WIFI_SSID "WEUNO"
-#define WIFI_PASSWORD "wearetheone"
+#define WIFI_SSID "Shehzad"
+#define WIFI_PASSWORD "#481@minhaj#"
 
 void setup() {
   Serial.begin(9600);
