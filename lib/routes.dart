@@ -19,8 +19,8 @@ onGenerateRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => HomeScreen());
     case RouteConstants.forgotPassword:
       return MaterialPageRoute(builder: (_) => ForgotPassword());
-    case RouteConstants.profile:
-      return MaterialPageRoute(builder: (_) => ProfileScreen());
+    // case RouteConstants.profile:
+    //   return MaterialPageRoute(builder: (_) => ProfileScreen());
     default:
   }
 }

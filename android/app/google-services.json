@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "314013041080",
+    "firebase_url": "https://react-cb858-default-rtdb.firebaseio.com",
+    "project_id": "react-cb858",
+    "storage_bucket": "react-cb858.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314013041080:android:7bb3995112846e76cccf4d",
+        "android_client_info": {
+          "package_name": "com.example.react"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314013041080-sdk5pmf18ohmtdrh2n3t64vdprps72uo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPh1BxPPGxmgjiKb-psRjoi4JmPnI1zXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314013041080-sdk5pmf18ohmtdrh2n3t64vdprps72uo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "314013041080-qeo9kfvm2dnjc2o6e06ekers166940bj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.react"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

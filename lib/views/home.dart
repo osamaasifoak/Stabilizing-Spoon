@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ).then((date) {
       if (date != null) {
         setState(() {
-          selectedDate = DateFormat('yyyy-MM').format(date.toString());
+          // selectedDate = DateFormat('yyyy-MM').format(date.toString());
         });
         print(selectedDate);
       }
