@@ -40,6 +40,7 @@ dependencies:
   firebase_storage: ^5.2.0
   # file_picker: ^2.1.5
   month_picker_dialog: ^0.3.3
+  firebase_database: ^4.4.0
   
 dev_dependencies:
   flutter_test:
