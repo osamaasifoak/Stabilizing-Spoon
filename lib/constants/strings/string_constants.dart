@@ -29,6 +29,7 @@ class StringConstant {
   static const String verify = "Verify";
   static const String home = "Home";
   static const String bookings = "Bookings";
+  static const String live = "live stats";
   static const String messages = "Messages";
   static const String more = "More";
   static const String servicesInclude = "Services Includes";

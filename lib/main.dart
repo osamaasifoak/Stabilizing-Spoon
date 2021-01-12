@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // FirebaseServices().signOut();
     Future.delayed(Duration(seconds: 3), () {
       if (user != null) {
-        Navigator.pushNamed(context, RouteConstants.homeScreen);
+        Navigator.pushNamed(context, RouteConstants.bottomBarScreen);
       } else {
         Navigator.pushNamed(context, RouteConstants.onboarding);
       }

@@ -11,6 +11,7 @@ class RouteConstants {
   static const String profile = 'profile';
   static const String forgotPassword = 'forgotPassword';
   static const String bottomBarScreen = 'bottomBarScreen';
+  static const String liveStatsscreen = 'liveStatsscreen';
   static const String messageScreen = 'messageScreen';
   static const String bookingScreen = 'bookingScreen';
   static const String moreScreen = 'moreScreen';

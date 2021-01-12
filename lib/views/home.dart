@@ -59,211 +59,219 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextComponent(
-                  text: StringConstant.react.toUpperCase(),
-                  textAlign: TextAlign.left,
-                  textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                      fontSize: 35,
-                      color: ColorConstant.purple,
-                      letterSpacing: 3),
-                ),
-                InkWell(
-                  onTap: () {
-                    // User _user = FirebaseAuth.instance.currentUser;
-                    Navigator.pushNamed(context, RouteConstants.profile);
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Image.network(
-                        "https://avatars2.githubusercontent.com/u/49792938?s=460&u=8a709ffa10b8cfd08c4561b37c02d17abb70927f&v=4",
-                        height: 40,
-                        width: 40,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            //Initialize the chart widget
-            FutureBuilder(
-              future: databaseReference
-                  .child(_user.uid)
-                  .child(selectedDate.year.toString())
-                  .child(selectedDate.month.toString())
-                  .once(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData &&
-                    !snapshot.hasError &&
-                    snapshot.data.value != null) {
-                  // DataSnapshot _spoonSnapshot = snapshot.data.value;
-                  Map<dynamic, dynamic> data = snapshot.data.value;
-                  double sumXvalues = 0.0;
-                  double sumYvalues = 0.0;
-                  int count = 0;
-                  chartsData.clear();
-                  data.forEach((key, value) {
-                    var temp = json.decode(value["user_data"]);
-                    if (selectedDate.day == int.parse(temp["date"])) {
-                      sumXvalues = sumXvalues + double.parse(temp["x"]);
-                      sumYvalues = sumYvalues + double.parse(temp["y"]);
-                      count = ++count;
-                    }
-                    print(count);
-                  });
-                  if (count != 0) {
-                    chartsData
-                        .add(_SalesData("x", ((sumXvalues / count) * 100)));
-                    chartsData.add(_SalesData(
-                        "stable point", ((sumXvalues - sumYvalues))));
-                    chartsData
-                        .add(_SalesData("y", ((sumYvalues / count) * 100)));
-                  } else {
-                    chartsData.add(_SalesData("x", 0));
-                    chartsData.add(_SalesData("stable point", 0));
-                    chartsData.add(_SalesData("y", 0));
-                  }
-                }
-                return SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
-                  // Chart title
-                  title: ChartTitle(
-                      text: 'Your stats of: ' +
-                          selectedDate.day.toString() +
-                          '-' +
-                          selectedDate.month.toString() +
-                          '-' +
-                          selectedDate.year.toString()),
-                  // Enable legend
-                  legend: Legend(isVisible: true),
-                  // Enable tooltip
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <ChartSeries<_SalesData, String>>[
-                    LineSeries<_SalesData, String>(
-                        dataSource: chartsData,
-                        xValueMapper: (_SalesData sales, _) => sales.year,
-                        yValueMapper: (_SalesData sales, _) => sales.sales,
-                        // pointColorMapper: ,
-                        name: 'Stats',
-                        isVisibleInLegend: false,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextComponent(
+                    text: StringConstant.react.toUpperCase(),
+                    textAlign: TextAlign.left,
+                    textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                        fontSize: 35,
                         color: ColorConstant.purple,
-                        // Enable data label
-                        dataLabelSettings: DataLabelSettings(isVisible: true))
-                  ],
-                );
-              },
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            StreamBuilder(
-              stream: databaseReference.child("spoon_value").onValue,
-              builder: (context, AsyncSnapshot snapshot) {
-                SpoonValues _spoonValue;
-                if (snapshot.hasData &&
-                    !snapshot.hasError &&
-                    snapshot.data.snapshot.value != null) {
-                  DataSnapshot _spoonSnapshot = snapshot.data.snapshot;
-                  _spoonValue = new SpoonValues.fromJson(_spoonSnapshot.value);
-                  stringJson = "{\"month\":" +
-                      selectedDate.month.toString() +
-                      ",\"year\":\"" +
-                      selectedDate.year.toString() +
-                      "\",\"date\":\"" +
-                      selectedDate.day.toString() +
-                      "\",\"x\":\"" +
-                      _spoonValue.x.toString() +
-                      "\",\"y\":\"" +
-                      _spoonValue.y.toString() +
-                      "\",\"date_time\":\"" +
-                      selectedDate.toString() +
-                      "\"}";
-                  databaseReference
-                      .child(_user.uid.toString())
-                      .child(selectedDate.year.toString())
-                      .child(selectedDate.month.toString())
-                      .push()
-                      .set({"user_data": stringJson});
-                }
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TextComponent(
-                          text: "X-AXIS: " + _spoonValue.x.toString(),
-                          textAlign: TextAlign.left,
-                          textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                              fontSize: 25,
-                              color: ColorConstant.purple,
-                              letterSpacing: 3),
+                        letterSpacing: 3),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      // User _user = FirebaseAuth.instance.currentUser;
+                      Navigator.pushNamed(context, RouteConstants.profile);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Card(
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Image.network(
+                          "https://avatars2.githubusercontent.com/u/49792938?s=460&u=8a709ffa10b8cfd08c4561b37c02d17abb70927f&v=4",
+                          height: 40,
+                          width: 40,
                         ),
-                        TextComponent(
-                          text: "Y-AXIS: " + _spoonValue.y.toString(),
-                          textAlign: TextAlign.left,
-                          textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                              fontSize: 25,
-                              color: ColorConstant.purple,
-                              letterSpacing: 3),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      child: SfCircularChart(
-                        // Enables the tooltip for all the series in chart
-                        tooltipBehavior: TooltipBehavior(enable: true),
-                        series: [
-                          // Initialize line series
-                          PieSeries<_SalesData, String>(
-                              // Enables the tooltip for individual series
-                              enableTooltip: true,
-                              dataSource: [
-                                // Bind data source
-                                _SalesData('x', double.parse(_spoonValue.x),
-                                    color: ColorConstant.purple),
-                                _SalesData('y', double.parse(_spoonValue.y),
-                                    color: ColorConstant.warmGrey),
-                              ],
-                              pointColorMapper: (_SalesData sales, _) =>
-                                  sales.color,
-                              xValueMapper: (_SalesData sales, _) => sales.year,
-                              yValueMapper: (_SalesData sales, _) =>
-                                  sales.sales),
-                        ],
                       ),
                     ),
-                  ],
-                );
-              },
-            ),
+                  )
+                ],
+              ),
+              //Initialize the chart widget
+              FutureBuilder(
+                future: databaseReference
+                    .child(_user.uid)
+                    .child(selectedDate.year.toString())
+                    .child(selectedDate.month.toString())
+                    .once(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      !snapshot.hasError &&
+                      snapshot.data.value != null) {
+                    // DataSnapshot _spoonSnapshot = snapshot.data.value;
+                    Map<dynamic, dynamic> data = snapshot.data.value;
+                    double sumXvalues = 0.0;
+                    double sumYvalues = 0.0;
+                    int count = 0;
+                    chartsData.clear();
+                    data.forEach((key, value) {
+                      var temp = json.decode(value["user_data"]);
+                      if (selectedDate.day == int.parse(temp["date"])) {
+                        sumXvalues = sumXvalues + double.parse(temp["x"]);
+                        sumYvalues = sumYvalues + double.parse(temp["y"]);
+                        count = ++count;
+                      }
+                      print(count);
+                    });
+                    if (count != 0) {
+                      chartsData
+                          .add(_SalesData("x", ((sumXvalues / count) * 100)));
+                      chartsData.add(_SalesData(
+                          "stable point", ((sumXvalues - sumYvalues))));
+                      chartsData
+                          .add(_SalesData("y", ((sumYvalues / count) * 100)));
+                    } else {
+                      chartsData.add(_SalesData("x", 0));
+                      chartsData.add(_SalesData("stable point", 0));
+                      chartsData.add(_SalesData("y", 0));
+                    }
+                  }
+                  return SfCartesianChart(
+                    primaryXAxis: CategoryAxis(),
+                    // Chart title
+                    title: ChartTitle(
+                        text: 'Your stats of: ' +
+                            selectedDate.day.toString() +
+                            '-' +
+                            selectedDate.month.toString() +
+                            '-' +
+                            selectedDate.year.toString()),
+                    // Enable legend
+                    legend: Legend(isVisible: true),
+                    // Enable tooltip
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    series: <ChartSeries<_SalesData, String>>[
+                      LineSeries<_SalesData, String>(
+                          dataSource: chartsData,
+                          xValueMapper: (_SalesData sales, _) => sales.year,
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          // pointColorMapper: ,
+                          name: 'Stats',
+                          isVisibleInLegend: false,
+                          color: ColorConstant.purple,
+                          // Enable data label
+                          dataLabelSettings: DataLabelSettings(isVisible: true))
+                    ],
+                  );
+                },
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              StreamBuilder(
+                stream: databaseReference.child("spoon_value").onValue,
+                builder: (context, AsyncSnapshot snapshot) {
+                  SpoonValues _spoonValue;
+                  if (snapshot.hasData &&
+                      !snapshot.hasError &&
+                      snapshot.data.snapshot.value != null) {
+                    DataSnapshot _spoonSnapshot = snapshot.data.snapshot;
+                    _spoonValue =
+                        new SpoonValues.fromJson(_spoonSnapshot.value);
+                    stringJson = "{\"month\":" +
+                        selectedDate.month.toString() +
+                        ",\"year\":\"" +
+                        selectedDate.year.toString() +
+                        "\",\"date\":\"" +
+                        selectedDate.day.toString() +
+                        "\",\"x\":\"" +
+                        _spoonValue.x.toString() +
+                        "\",\"y\":\"" +
+                        _spoonValue.y.toString() +
+                        "\",\"date_time\":\"" +
+                        selectedDate.toString() +
+                        "\"}";
+                    // databaseReference
+                    //     .child(_user.uid.toString())
+                    //     .child(selectedDate.year.toString())
+                    //     .child(selectedDate.month.toString())
+                    //     .push()
+                    //     .set({"user_data": stringJson});
+                  }
+                  return Column(
+                    children: [
+                      _spoonValue != null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                TextComponent(
+                                  text: "X-AXIS: " + _spoonValue.x.toString(),
+                                  textAlign: TextAlign.left,
+                                  textStyle:
+                                      FontStyles.patuaOneCustomFonSizeAndWeight(
+                                          fontSize: 25,
+                                          color: ColorConstant.purple,
+                                          letterSpacing: 3),
+                                ),
+                                TextComponent(
+                                  text: "Y-AXIS: " + _spoonValue.y.toString(),
+                                  textAlign: TextAlign.left,
+                                  textStyle:
+                                      FontStyles.patuaOneCustomFonSizeAndWeight(
+                                          fontSize: 25,
+                                          color: ColorConstant.purple,
+                                          letterSpacing: 3),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
+                      Container(
+                        child: SfCircularChart(
+                          // Enables the tooltip for all the series in chart
+                          tooltipBehavior: TooltipBehavior(enable: true),
+                          series: [
+                            // Initialize line series
+                            PieSeries<_SalesData, String>(
+                                // Enables the tooltip for individual series
+                                enableTooltip: true,
+                                dataSource: [
+                                  // Bind data source
+                                  _SalesData('x', double.parse(_spoonValue.x),
+                                      color: ColorConstant.purple),
+                                  _SalesData('y', double.parse(_spoonValue.y),
+                                      color: ColorConstant.warmGrey),
+                                ],
+                                pointColorMapper: (_SalesData sales, _) =>
+                                    sales.color,
+                                xValueMapper: (_SalesData sales, _) =>
+                                    sales.year,
+                                yValueMapper: (_SalesData sales, _) =>
+                                    sales.sales),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
 
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   //Initialize the spark charts widget
-            //   child: SfSparkLineChart.custom(
-            //     //Enable the trackball
-            //     trackball: SparkChartTrackball(
-            //         activationMode: SparkChartActivationMode.tap),
-            //     //Enable marker
-            //     marker:
-            //         SparkChartMarker(displayMode: SparkChartMarkerDisplayMode.all),
-            //     //Enable data label
-            //     labelDisplayMode: SparkChartLabelDisplayMode.all,
-            //     xValueMapper: (int index) => data[index].year,
-            //     yValueMapper: (int index) => data[index].sales,
-            //     dataCount: 5,
-            //   ),
-            // )
-          ]),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   //Initialize the spark charts widget
+              //   child: SfSparkLineChart.custom(
+              //     //Enable the trackball
+              //     trackball: SparkChartTrackball(
+              //         activationMode: SparkChartActivationMode.tap),
+              //     //Enable marker
+              //     marker:
+              //         SparkChartMarker(displayMode: SparkChartMarkerDisplayMode.all),
+              //     //Enable data label
+              //     labelDisplayMode: SparkChartLabelDisplayMode.all,
+              //     xValueMapper: (int index) => data[index].year,
+              //     yValueMapper: (int index) => data[index].sales,
+              //     dataCount: 5,
+              //   ),
+              // )
+            ]),
+          ),
         ),
       ),
       floatingActionButton: SizedBox(
