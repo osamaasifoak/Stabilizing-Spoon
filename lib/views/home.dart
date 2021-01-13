@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:react/components/button_component.dart';
 import 'package:react/components/text_component.dart';
 import 'package:react/constants/colors/colors_constants.dart';
@@ -13,7 +12,6 @@ import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/models/spoon_value_model.dart';
 import 'package:react/uiUtils/size_config.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -169,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
               StreamBuilder(
                 stream: databaseReference.child("spoon_value").onValue,
                 builder: (context, AsyncSnapshot snapshot) {
-                  SpoonValues _spoonValue;
+                  SpoonValues _spoonValue = new SpoonValues(x: "0", y: "0");
                   if (snapshot.hasData &&
                       !snapshot.hasError &&
                       snapshot.data.snapshot.value != null) {

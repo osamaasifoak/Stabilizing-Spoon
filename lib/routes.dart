@@ -6,6 +6,7 @@ import 'package:react/views/bottom_screen.dart';
 import 'package:react/views/home.dart';
 import 'package:react/views/live_stats_screen.dart';
 import 'package:react/views/on_boarding/on_boarding_view.dart';
+import 'package:react/views/profile.dart';
 import 'constants/routes/routes_constants.dart';
 
 onGenerateRoutes(RouteSettings settings) {
@@ -18,6 +19,8 @@ onGenerateRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => SignupScreen());
     case RouteConstants.homeScreen:
       return MaterialPageRoute(builder: (_) => HomeScreen());
+    case RouteConstants.profile:
+      return MaterialPageRoute(builder: (_) => ProfileScreen());
     case RouteConstants.forgotPassword:
       return MaterialPageRoute(builder: (_) => ForgotPassword());
     case RouteConstants.bottomBarScreen:
