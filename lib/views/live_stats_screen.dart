@@ -95,7 +95,7 @@ class _LiveStatsScreenState extends State<LiveStatsScreen> {
                 ? StreamBuilder(
                     stream: databaseReference.child("spoon_value").onValue,
                     builder: (context, AsyncSnapshot snapshot) {
-                      SpoonValues _spoonValue;
+                      SpoonValues _spoonValue = new SpoonValues(x: "0", y: "0");
                       if (snapshot.hasData &&
                           !snapshot.hasError &&
                           snapshot.data.snapshot.value != null) {

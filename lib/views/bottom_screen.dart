@@ -29,7 +29,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
       //Todo: check stack count
       if (_selectedIndex != 0) {
         setState(() {
-          changeTab(0, context);
+          // changeTab(0, context);
         });
         return false;
       } else {

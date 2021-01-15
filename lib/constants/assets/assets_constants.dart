@@ -17,4 +17,5 @@ class AssetConstant {
   static const String moneyService = 'assets/money-service.svg';
   static const String bookingDate = 'assets/booking-date.svg';
   static const String bookingTime = 'assets/booking-time.svg';
+  static const String happyPana = 'assets/happy-pana.png';
 }

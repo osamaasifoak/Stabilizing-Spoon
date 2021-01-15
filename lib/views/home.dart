@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:react/components/button_component.dart';
 import 'package:react/components/text_component.dart';
+import 'package:react/constants/assets/assets_constants.dart';
 import 'package:react/constants/colors/colors_constants.dart';
 import 'package:react/constants/routes/routes_constants.dart';
 import 'package:react/constants/strings/string_constants.dart';
@@ -36,9 +37,22 @@ class _HomeScreenState extends State<HomeScreen> {
     showDatePicker(
       context: context,
       firstDate: DateTime(DateTime.now().year - 1, 5),
-      lastDate: DateTime(DateTime.now().year + 1, 9),
+      lastDate: DateTime.now(),
       initialDate: selectedDate,
       locale: Locale("en"),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: ColorConstant.purple,
+            accentColor: ColorConstant.purple,
+            colorScheme: ColorScheme.light(
+              primary: ColorConstant.purple,
+            ),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child,
+        );
+      },
     ).then((date) {
       if (date != null) {
         // String test;
@@ -164,110 +178,58 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 24,
               ),
-              StreamBuilder(
-                stream: databaseReference.child("spoon_value").onValue,
-                builder: (context, AsyncSnapshot snapshot) {
-                  SpoonValues _spoonValue = new SpoonValues(x: "0", y: "0");
-                  if (snapshot.hasData &&
-                      !snapshot.hasError &&
-                      snapshot.data.snapshot.value != null) {
-                    DataSnapshot _spoonSnapshot = snapshot.data.snapshot;
-                    _spoonValue =
-                        new SpoonValues.fromJson(_spoonSnapshot.value);
-                    stringJson = "{\"month\":" +
-                        selectedDate.month.toString() +
-                        ",\"year\":\"" +
-                        selectedDate.year.toString() +
-                        "\",\"date\":\"" +
-                        selectedDate.day.toString() +
-                        "\",\"x\":\"" +
-                        _spoonValue.x.toString() +
-                        "\",\"y\":\"" +
-                        _spoonValue.y.toString() +
-                        "\",\"date_time\":\"" +
-                        selectedDate.toString() +
-                        "\"}";
-                    // databaseReference
-                    //     .child(_user.uid.toString())
-                    //     .child(selectedDate.year.toString())
-                    //     .child(selectedDate.month.toString())
-                    //     .push()
-                    //     .set({"user_data": stringJson});
-                  }
-                  return Column(
-                    children: [
-                      _spoonValue != null
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                TextComponent(
-                                  text: "X-AXIS: " + _spoonValue.x.toString(),
-                                  textAlign: TextAlign.left,
-                                  textStyle:
-                                      FontStyles.patuaOneCustomFonSizeAndWeight(
-                                          fontSize: 25,
-                                          color: ColorConstant.purple,
-                                          letterSpacing: 3),
-                                ),
-                                TextComponent(
-                                  text: "Y-AXIS: " + _spoonValue.y.toString(),
-                                  textAlign: TextAlign.left,
-                                  textStyle:
-                                      FontStyles.patuaOneCustomFonSizeAndWeight(
-                                          fontSize: 25,
-                                          color: ColorConstant.purple,
-                                          letterSpacing: 3),
-                                ),
-                              ],
-                            )
-                          : SizedBox(),
-                      Container(
-                        child: SfCircularChart(
-                          // Enables the tooltip for all the series in chart
-                          tooltipBehavior: TooltipBehavior(enable: true),
-                          series: [
-                            // Initialize line series
-                            PieSeries<_SalesData, String>(
-                                // Enables the tooltip for individual series
-                                enableTooltip: true,
-                                dataSource: [
-                                  // Bind data source
-                                  _SalesData('x', double.parse(_spoonValue.x),
-                                      color: ColorConstant.purple),
-                                  _SalesData('y', double.parse(_spoonValue.y),
-                                      color: ColorConstant.warmGrey),
-                                ],
-                                pointColorMapper: (_SalesData sales, _) =>
-                                    sales.color,
-                                xValueMapper: (_SalesData sales, _) =>
-                                    sales.year,
-                                yValueMapper: (_SalesData sales, _) =>
-                                    sales.sales),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextComponent(
+                  text: "Trend",
+                  textAlign: TextAlign.left,
+                  textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                      fontSize: 25,
+                      color: ColorConstant.purple,
+                      letterSpacing: 3),
+                ),
               ),
-
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   //Initialize the spark charts widget
-              //   child: SfSparkLineChart.custom(
-              //     //Enable the trackball
-              //     trackball: SparkChartTrackball(
-              //         activationMode: SparkChartActivationMode.tap),
-              //     //Enable marker
-              //     marker:
-              //         SparkChartMarker(displayMode: SparkChartMarkerDisplayMode.all),
-              //     //Enable data label
-              //     labelDisplayMode: SparkChartLabelDisplayMode.all,
-              //     xValueMapper: (int index) => data[index].year,
-              //     yValueMapper: (int index) => data[index].sales,
-              //     dataCount: 5,
-              //   ),
-              // )
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: SizeConfig.screenWidth,
+                decoration: new BoxDecoration(
+                    color: ColorConstant.purple,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.trending_up,
+                            color: ColorConstant.white,
+                            size: 50,
+                          ),
+                          TextComponent(
+                            text:
+                                "You're trend \nshowing that \nyou are \ngoing good.",
+                            textAlign: TextAlign.left,
+                            textStyle: FontStyles.loraCustomFonSizeAndWeight(
+                                fontSize: 16,
+                                color: ColorConstant.white,
+                                letterSpacing: 3),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Image.asset(
+                      AssetConstant.happyPana,
+                      height: 200,
+                    ),
+                  ],
+                ),
+              )
             ]),
           ),
         ),
