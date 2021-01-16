@@ -16,6 +16,7 @@ class TextInputComponent extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final void Function(String) onFieldSubmitted;
   final String Function(String) validator;
+  final TextInputType inputType;
   const TextInputComponent(
       {Key key,
       this.controller,
@@ -31,7 +32,8 @@ class TextInputComponent extends StatelessWidget {
       this.intialValue,
       this.filled,
       this.onFieldSubmitted,
-      this.validator})
+      this.validator,
+      this.inputType = TextInputType.emailAddress})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class TextInputComponent extends StatelessWidget {
             FocusScope.of(context).requestFocus(nextFocus);
           }
         },
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: inputType,
         decoration: InputDecoration(
           labelText: title,
           fillColor: fillColor,

@@ -115,12 +115,12 @@ class _LiveStatsScreenState extends State<LiveStatsScreen> {
                             "\",\"date_time\":\"" +
                             selectedDate.toString() +
                             "\"}";
-                        // databaseReference
-                        //     .child(_user.uid.toString())
-                        //     .child(selectedDate.year.toString())
-                        //     .child(selectedDate.month.toString())
-                        //     .push()
-                        //     .set({"user_data": stringJson});
+                        databaseReference
+                            .child(_user.uid.toString())
+                            .child(selectedDate.year.toString())
+                            .child(selectedDate.month.toString())
+                            .push()
+                            .set({"user_data": stringJson});
                       }
                       return Column(
                         children: [
