@@ -47,16 +47,17 @@
 #include <Servo.h>
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
-#include <SoftwareSerial.h>
+#include<SoftwareSerial.h>
 //#include "MPU6050.h" // not necessary if using MotionApps include file
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
 #endif
 
 #define LED_PIN 13
-#define RX 2// pin 2 del arduino
-#define TX 3// pin 3 del arduino
 
+#define RX 10
+#define TX 11
+SoftwareSerial esp8266(RX, TX);
 bool blinkState = true;
 
 Servo Servo1;   // First Servo off the chassis
@@ -99,7 +100,9 @@ float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gra
 
 void setup()
 {
-
+  esp8266.begin(115200);
+  esp8266.println("AT");
+  Serial.println(esp8266.read());
   Servo1.attach(10);  // attaches the servo on D11 to the servo object
   Servo2.attach(11);  // Second servo on D11
   delay(50);
@@ -112,7 +115,7 @@ void setup()
   Servo1.write(0);
   Servo2.write(90);
   delay(500);
-
+  
   // join I2C bus (I2Cdev library doesn't do this automatically)
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
   Wire.begin();
@@ -253,3 +256,38 @@ void processAccelGyro()
 
   } // if (mpuIntStatus & 0x02)
 }  // processAccelGyro()
+
+
+void sendCommandToESP8266(String command, int maxTime, char readReplay[]) {
+  Serial.print(countTrueCommand);
+  Serial.print(". at command => ");
+  Serial.print(command);
+  Serial.print(" ");
+  while (countTimeCommand < (maxTime * 1))
+  {
+    esp8266.println(command);
+    if (esp8266.find(readReplay))
+    {
+      found = true;
+      break;
+    }
+
+    countTimeCommand++;
+  }
+
+  if (found == true)
+  {
+    Serial.println("Success");
+    countTrueCommand++;
+    countTimeCommand = 0;
+  }
+
+  if (found == false)
+  {
+    Serial.println("Fail");
+    countTrueCommand = 0;
+    countTimeCommand = 0;
+  }
+
+  found = false;
+}

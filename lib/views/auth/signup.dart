@@ -50,10 +50,10 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextComponent(
-                  text: StringConstant.react.toUpperCase(),
+                text: StringConstant.react.toUpperCase(),
                   textAlign: TextAlign.center,
                   textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                      fontSize: 80,
+                      fontSize: 35,
                       color: ColorConstant.purple,
                       letterSpacing: 3),
                 ),
@@ -107,8 +107,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           password: _passwordTextEditingConrtroller.text);
                       if (res == 'weak-password') {
                         SnackbarConstant.showInSnackBar(
-                            'The password provided is too weak.',
-                            _scaffoldKey);
+                            'The password provided is too weak.', _scaffoldKey);
                         Navigator.pop(context);
                       } else if (res == 'email-already-in-use') {
                         SnackbarConstant.showInSnackBar(
@@ -120,7 +119,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             SharedPreferenceConstant.user,
                             res.user.email.toString());
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => HomeScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
                             (Route<dynamic> route) => false);
                       } else {
                         SnackbarConstant.showInSnackBar(

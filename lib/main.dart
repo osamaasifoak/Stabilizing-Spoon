@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
               text: StringConstant.react.toUpperCase(),
               textAlign: TextAlign.center,
               textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                  fontSize: 80, color: ColorConstant.purple, letterSpacing: 3),
+                  fontSize: 35, color: ColorConstant.purple, letterSpacing: 3),
             ),
             TextComponent(
               text: StringConstant.eatingPartner,

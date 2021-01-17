@@ -212,8 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: 50,
                           ),
                           TextComponent(
-                            text:
-                                "You're trend \nshowing that \nyou are \ngoing good.",
+                            text: "Hey Keep it up\nyou're on the \nright track",
                             textAlign: TextAlign.left,
                             textStyle: FontStyles.loraCustomFonSizeAndWeight(
                                 fontSize: 16,

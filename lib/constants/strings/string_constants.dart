@@ -1,5 +1,5 @@
 class StringConstant {
-  static const String react = "React";
+  static const String react = "Stable Spoon";
   static const String eatingPartner = "You're eating partner";
   static const String onboarding_1 =
       "Now don’t be sad about how to eat with your shaking hand.";

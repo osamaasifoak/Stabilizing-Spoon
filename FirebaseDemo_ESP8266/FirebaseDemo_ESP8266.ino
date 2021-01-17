@@ -23,8 +23,8 @@
 // Set these to run example.
 #define FIREBASE_HOST "react-cb858-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "U7Z1NKCzeAV7Om8Ki9lgNDQypbDOnrNyL0z7nJLH"
-#define WIFI_SSID "Shehzad"
-#define WIFI_PASSWORD "#481@minhaj#"
+#define WIFI_SSID "TJNET_125 (03153249688)"
+#define WIFI_PASSWORD "pakistan123+"
 
 void setup() {
   Serial.begin(9600);
@@ -44,7 +44,7 @@ void setup() {
 }
 
 int n = 0;
-
+String jsonStr = "";
 void loop() {
   // set value
 //  Firebase.setFloat("number", 42.0);
@@ -77,13 +77,14 @@ void loop() {
 
   // set string value
 //  Firebase.setString("x", "hello world");
-String jsonStr = "";
+
  jsonStr = "{\"x\":" + String(n++ + 1) + ",\"y\":\"" + String(n++ + 100) + "\"}";
   Firebase.setString("spoon_value", jsonStr);
   // handle error
   if (Firebase.failed()) {
       Serial.print("setting /message failed:");
-      Serial.println(Firebase.error());  
+// Serial.print(Firebase.error());
+//      Serial.println(Firebase.error());  
       return;
   }
   delay(1000);

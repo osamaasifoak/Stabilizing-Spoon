@@ -48,7 +48,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   text: StringConstant.react.toUpperCase(),
                   textAlign: TextAlign.center,
                   textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                      fontSize: 80,
+                      fontSize: 35,
                       color: ColorConstant.purple,
                       letterSpacing: 3),
                 ),

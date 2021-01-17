@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: StringConstant.react.toUpperCase(),
                   textAlign: TextAlign.center,
                   textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                      fontSize: 80,
+                      fontSize: 35,
                       color: ColorConstant.purple,
                       letterSpacing: 3),
                 ),
@@ -123,7 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             SharedPreferenceConstant.user,
                             res.user.email.toString());
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => HomeScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
                             (Route<dynamic> route) => false);
                       }
                     }
