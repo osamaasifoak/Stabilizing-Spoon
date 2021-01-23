@@ -3,6 +3,7 @@ import 'package:react/views/auth/forgotPassword.dart';
 import 'package:react/views/auth/login.dart';
 import 'package:react/views/auth/signup.dart';
 import 'package:react/views/bottom_screen.dart';
+import 'package:react/views/demo_readings.dart';
 import 'package:react/views/home.dart';
 import 'package:react/views/live_stats_screen.dart';
 import 'package:react/views/on_boarding/on_boarding_view.dart';
@@ -27,6 +28,8 @@ onGenerateRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => BottomBarScreen());
     case RouteConstants.liveStatsscreen:
       return MaterialPageRoute(builder: (_) => LiveStatsScreen());
+    case RouteConstants.demoReadings:
+      return MaterialPageRoute(builder: (_) => DemoReadingsScreen());
     default:
   }
 }

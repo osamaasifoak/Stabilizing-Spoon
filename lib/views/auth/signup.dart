@@ -50,7 +50,7 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextComponent(
-                text: StringConstant.react.toUpperCase(),
+                  text: StringConstant.react.toUpperCase(),
                   textAlign: TextAlign.center,
                   textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
                       fontSize: 35,
@@ -82,11 +82,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   fillColor: ColorConstant.paleGrey,
                   filled: true,
                   validator: (value) {
-                    if (!OwesomeValidator.password(
-                        value,
-                        OwesomeValidator
-                            .passwordMinLen8withLowerCaseAndSpecialChar)) {
-                      return "Invalid password";
+                    if (value.length < 6) {
+                      return "Password must be greater than 6 characters.";
                     }
                     return null;
                   },
@@ -126,6 +123,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         SnackbarConstant.showInSnackBar(
                             'Something went wrong.', _scaffoldKey);
                       }
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                   buttonText: StringConstant.signup,

@@ -18,5 +18,5 @@ class RouteConstants {
   static const String serviceListScreen = 'serviceListScreen';
   static const String serviceListDetailScreen = 'serviceListDetailScreen';
   static const String cartScreen = 'cartScreen';
-  static const String bookingDetailsScreen = 'bookingDetailsScreen';
+  static const String demoReadings = 'demorReadings';
 }

@@ -127,6 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 builder: (context) => HomeScreen()),
                             (Route<dynamic> route) => false);
                       }
+                    } else {
+                      Navigator.pop(context);
                     }
                   },
                   buttonText: StringConstant.login,

@@ -12,6 +12,7 @@ import 'package:react/constants/colors/colors_constants.dart';
 import 'package:react/constants/strings/share_preferences_constant.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
+import 'package:react/main.dart';
 import 'package:react/services/firebase_services.dart';
 import 'package:react/services/shared_preferences_services.dart';
 import 'package:react/uiUtils/loading.dart';
@@ -66,6 +67,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
           textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
               fontSize: 18, color: ColorConstant.purple, letterSpacing: 3),
         ),
+        actions: [
+          InkWell(
+            onTap: () async {
+              await FirebaseServices().signOut();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => SplashScreen(),
+                  ),
+                  (Route<dynamic> route) => false);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.exit_to_app,
+                color: ColorConstant.purple,
+              ),
+            ),
+          )
+        ],
       ),
       body: Container(
         width: SizeConfig.screenWidth,
@@ -185,22 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 16,
                   ),
                   TextInputComponent(
-                    title: StringConstant.email,
-                    controller: _emailTextEditingConrtroller,
-                    fillColor: ColorConstant.paleGrey,
-                    filled: true,
-                    validator: (value) {
-                      if (value == "") {
-                        return "Email field can't be empty";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  TextInputComponent(
-                    title: "Age (Optional)",
+                    title: "Age",
                     controller: _ageTextEditingConrtroller,
                     fillColor: ColorConstant.paleGrey,
                     inputType: TextInputType.number,
@@ -226,7 +231,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               .set({
                             "fullname": _fullnameTextEditingConrtroller.text,
                             "mobile_number": _mobileTextEditingConrtroller.text,
-                            "email": _emailTextEditingConrtroller.text,
                             "age": _ageTextEditingConrtroller.text
                           });
                         } catch (ex) {
