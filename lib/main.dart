@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Duration(seconds: 3),
       () {
         if (user != null) {
-          Navigator.pushNamed(context, RouteConstants.demoReadings);
+          Navigator.pushNamed(context, RouteConstants.homeScreen);
         } else {
           Navigator.pushNamed(context, RouteConstants.onboarding);
         }
