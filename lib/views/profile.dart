@@ -27,7 +27,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool editState = false;
-  TextEditingController _emailTextEditingConrtroller;
   TextEditingController _mobileTextEditingConrtroller;
   TextEditingController _fullnameTextEditingConrtroller;
   TextEditingController _ageTextEditingConrtroller;
@@ -38,7 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _emailTextEditingConrtroller = new TextEditingController();
     _mobileTextEditingConrtroller = new TextEditingController();
     _fullnameTextEditingConrtroller = new TextEditingController();
     _ageTextEditingConrtroller = new TextEditingController();
@@ -104,25 +102,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: FutureBuilder(
-                        future: databaseReference
-                            .child("users")
-                            .child(_user.uid)
-                            .child("profile_image")
-                            .once(),
-                        builder: (context, snapshot) {
-                          return Card(
-                            elevation: 5.0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Image.network(
-                              snapshot.hasData && snapshot.data.value != null
-                                  ? snapshot.data.value
-                                  : "https://www.mountsinai.on.ca/wellbeing/our-team/team-images/person-placeholder/image",
-                              height: 150,
-                              width: 150,
-                            ),
-                          );
-                        }),
+                      future: databaseReference
+                          .child("users")
+                          .child(_user.uid)
+                          .child("profile_image")
+                          .once(),
+                      builder: (context, snapshot) {
+                        return Card(
+                          elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Image.network(
+                            snapshot.hasData && snapshot.data.value != null
+                                ? snapshot.data.value
+                                : "https://www.mountsinai.on.ca/wellbeing/our-team/team-images/person-placeholder/image",
+                            height: 150,
+                            width: 150,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 20,
@@ -170,92 +169,122 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     height: 30,
                   ),
-                  TextInputComponent(
-                    title: StringConstant.fullName,
-                    controller: _fullnameTextEditingConrtroller,
-                    fillColor: ColorConstant.paleGrey,
-                    filled: true,
-                    validator: (value) {
-                      if (value == "") {
-                        return "Fullname field can't be empty";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  TextInputComponent(
-                    title: StringConstant.mobileNumber,
-                    controller: _mobileTextEditingConrtroller,
-                    fillColor: ColorConstant.paleGrey,
-                    filled: true,
-                    inputType: TextInputType.number,
-                    validator: (value) {
-                      if (value == "") {
-                        return "Mobile number field can't be empty";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  TextInputComponent(
-                    title: "Age",
-                    controller: _ageTextEditingConrtroller,
-                    fillColor: ColorConstant.paleGrey,
-                    inputType: TextInputType.number,
-                    filled: true,
-                    validator: (value) {
-                      if (value == "") {
-                        return "Age field can't be empty";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  ButtonComponent(
-                    onPressed: () async {
-                      if (editState) {
-                        LoaderConstant.loadingpopups(context);
-                        if (_formKey.currentState.validate()) {
-                          try {
-                            databaseReference
-                                .child("users")
-                                .child(_user.uid.toString())
-                                .update({
-                              "fullname": _fullnameTextEditingConrtroller.text,
-                              "mobile_number":
-                                  _mobileTextEditingConrtroller.text,
-                              "age": _ageTextEditingConrtroller.text
-                            });
-                            Navigator.pop(context);
-                          } catch (ex) {
-                            Navigator.pop(context);
-                            print(ex);
-                          }
-                        } else {
-                          Navigator.pop(context);
-                        }
+                  FutureBuilder(
+                    future: databaseReference
+                        .child("users")
+                        .child(_user.uid)
+                        .once(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        _fullnameTextEditingConrtroller.text =
+                            snapshot.data.value["fullname"];
+                        _ageTextEditingConrtroller.text =
+                            snapshot.data.value["age"];
+                        _mobileTextEditingConrtroller.text =
+                            snapshot.data.value["mobile_number"];
+                        return Column(
+                          children: [
+                            TextInputComponent(
+                              title: StringConstant.fullName,
+                              controller: _fullnameTextEditingConrtroller,
+                              fillColor: ColorConstant.paleGrey,
+                              filled: true,
+                              validator: (value) {
+                                if (value == "") {
+                                  return "Fullname field can't be empty";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            TextInputComponent(
+                              title: StringConstant.mobileNumber,
+                              controller: _mobileTextEditingConrtroller,
+                              fillColor: ColorConstant.paleGrey,
+                              filled: true,
+                              inputType: TextInputType.number,
+                              validator: (value) {
+                                if (value == "") {
+                                  return "Mobile number field can't be empty";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            TextInputComponent(
+                              title: "Age",
+                              controller: _ageTextEditingConrtroller,
+                              fillColor: ColorConstant.paleGrey,
+                              inputType: TextInputType.number,
+                              filled: true,
+                              validator: (value) {
+                                if (value == "") {
+                                  return "Age field can't be empty";
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            ButtonComponent(
+                              onPressed: () async {
+                                if (editState) {
+                                  LoaderConstant.loadingpopups(context);
+                                  if (_formKey.currentState.validate()) {
+                                    try {
+                                      databaseReference
+                                          .child("users")
+                                          .child(_user.uid.toString())
+                                          .update({
+                                        "fullname":
+                                            _fullnameTextEditingConrtroller
+                                                .text,
+                                        "mobile_number":
+                                            _mobileTextEditingConrtroller.text,
+                                        "age": _ageTextEditingConrtroller.text
+                                      });
+                                      Navigator.pop(context);
+                                      setState(() {
+                                        editState = false;
+                                      });
+                                    } catch (ex) {
+                                      Navigator.pop(context);
+                                      print(ex);
+                                    }
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                } else {
+                                  setState(() {
+                                    editState = true;
+                                  });
+                                }
+                              },
+                              buttonText: editState
+                                  ? StringConstant.saveChanges
+                                  : StringConstant.editProfile,
+                              color: ColorConstant.purple,
+                              border: 20,
+                              textStyle:
+                                  FontStyles.patuaOneCustomFonSizeAndWeight(
+                                      color: ColorConstant.white,
+                                      letterSpacing: 1.3,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16.0),
+                            ),
+                          ],
+                        );
                       } else {
-                        setState(() {
-                          editState = true;
-                        });
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
                     },
-                    buttonText: editState
-                        ? StringConstant.saveChanges
-                        : StringConstant.editProfile,
-                    color: ColorConstant.purple,
-                    border: 20,
-                    textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                        color: ColorConstant.white,
-                        letterSpacing: 1.3,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16.0),
                   ),
                 ],
               ),
