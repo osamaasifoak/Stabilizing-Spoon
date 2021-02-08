@@ -92,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordTextEditingConrtroller,
                   fillColor: ColorConstant.paleGrey,
                   filled: true,
+                  obscureText: true,
                   validator: (value) {
                     if (value == "") {
                       return "Password field can't be empty";

@@ -17,6 +17,7 @@ class TextInputComponent extends StatelessWidget {
   final void Function(String) onFieldSubmitted;
   final String Function(String) validator;
   final TextInputType inputType;
+  final bool obscureText;
   const TextInputComponent(
       {Key key,
       this.controller,
@@ -33,7 +34,8 @@ class TextInputComponent extends StatelessWidget {
       this.filled,
       this.onFieldSubmitted,
       this.validator,
-      this.inputType = TextInputType.emailAddress})
+      this.inputType = TextInputType.emailAddress,
+      this.obscureText = false})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class TextInputComponent extends StatelessWidget {
         initialValue: intialValue,
         onChanged: onChanged,
         maxLength: maxLength != null ? maxLength : null,
-        obscureText: false,
+        obscureText: obscureText,
         enabled: this.enabled,
         focusNode: currentFocus,
         textInputAction: textInputAction,
