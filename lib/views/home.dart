@@ -93,16 +93,26 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Card(
-                        elevation: 5.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Image.network(
-                          "https://avatars2.githubusercontent.com/u/49792938?s=460&u=8a709ffa10b8cfd08c4561b37c02d17abb70927f&v=4",
-                          height: 40,
-                          width: 40,
-                        ),
-                      ),
+                      child: FutureBuilder(
+                          future: databaseReference
+                              .child("users")
+                              .child(_user.uid)
+                              .child("profile_image")
+                              .once(),
+                          builder: (context, snapshot) {
+                            return Card(
+                              elevation: 5.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Image.network(
+                                snapshot.hasData && snapshot.data.value != null
+                                    ? snapshot.data.value
+                                    : "https://www.mountsinai.on.ca/wellbeing/our-team/team-images/person-placeholder/image",
+                                height: 40,
+                                width: 40,
+                              ),
+                            );
+                          }),
                     ),
                   )
                 ],

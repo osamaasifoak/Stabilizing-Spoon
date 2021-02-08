@@ -46,14 +46,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // FirebaseServices().signOut();
-    Future.delayed(Duration(seconds: 3), () {
-      if (user != null) {
-        Navigator.pushNamed(context, RouteConstants.bottomBarScreen);
-      } else {
-        Navigator.pushNamed(context, RouteConstants.onboarding);
-      }
-    });
+    Future.delayed(
+      Duration(seconds: 3),
+      () {
+        if (user != null) {
+          Navigator.pushNamed(context, RouteConstants.homeScreen);
+        } else {
+          Navigator.pushNamed(context, RouteConstants.onboarding);
+        }
+      },
+    );
   }
 
   @override

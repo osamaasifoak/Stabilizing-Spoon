@@ -21,10 +21,10 @@
 #include <FirebaseArduino.h>
 
 // Set these to run example.
-#define FIREBASE_HOST "react-cb858-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "U7Z1NKCzeAV7Om8Ki9lgNDQypbDOnrNyL0z7nJLH"
-#define WIFI_SSID "TJNET_125 (03153249688)"
-#define WIFI_PASSWORD "pakistan123+"
+#define FIREBASE_HOST "stable-spoon-default-rtdb.firebaseio.com"
+#define FIREBASE_AUTH "SbyaYAX8BtZ1s38Y9hepVg6gQMJtV8AwPVCzKHGF"
+#define WIFI_SSID "osama"
+#define WIFI_PASSWORD "Osama@12345"
 
 void setup() {
   Serial.begin(9600);
@@ -44,7 +44,7 @@ void setup() {
 }
 
 int n = 0;
-String jsonStr = "";
+//String jsonStr = "";
 void loop() {
   // set value
 //  Firebase.setFloat("number", 42.0);
@@ -78,16 +78,16 @@ void loop() {
   // set string value
 //  Firebase.setString("x", "hello world");
 
- jsonStr = "{\"x\":" + String(n++ + 1) + ",\"y\":\"" + String(n++ + 100) + "\"}";
+ String jsonStr = "{\"x\":" + String(n++ + 1) + ",\"y\":\"" + String(n++ + 100) + "\"}";
   Firebase.setString("spoon_value", jsonStr);
   // handle error
   if (Firebase.failed()) {
       Serial.print("setting /message failed:");
 // Serial.print(Firebase.error());
-//      Serial.println(Firebase.error());  
+      Serial.println(Firebase.error());  
       return;
   }
-  delay(1000);
+  delay(500);
   
   // set bool value
 //  Firebase.setBool("y", false);

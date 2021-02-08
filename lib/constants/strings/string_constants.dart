@@ -10,6 +10,7 @@ class StringConstant {
   static const String login = "Login";
   static const String selectDate = "Select date";
   static const String saveChanges = "Save Changes";
+  static const String editProfile = "Edit profile";
   static const String signup = "Sign Up";
   static const String email = "Email";
   static const String password = "Password";

@@ -12,6 +12,7 @@ import 'package:react/constants/colors/colors_constants.dart';
 import 'package:react/constants/strings/share_preferences_constant.dart';
 import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
+import 'package:react/main.dart';
 import 'package:react/services/firebase_services.dart';
 import 'package:react/services/shared_preferences_services.dart';
 import 'package:react/uiUtils/loading.dart';
@@ -25,6 +26,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool editState = false;
   TextEditingController _emailTextEditingConrtroller;
   TextEditingController _mobileTextEditingConrtroller;
   TextEditingController _fullnameTextEditingConrtroller;
@@ -66,6 +68,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
           textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
               fontSize: 18, color: ColorConstant.purple, letterSpacing: 3),
         ),
+        actions: [
+          InkWell(
+            onTap: () async {
+              await FirebaseServices().signOut();
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => SplashScreen(),
+                  ),
+                  (Route<dynamic> route) => false);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.exit_to_app,
+                color: ColorConstant.purple,
+              ),
+            ),
+          )
+        ],
       ),
       body: Container(
         width: SizeConfig.screenWidth,
@@ -80,33 +101,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     height: 40,
                   ),
-                  _user.photoURL == ""
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Card(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: FutureBuilder(
+                        future: databaseReference
+                            .child("users")
+                            .child(_user.uid)
+                            .child("profile_image")
+                            .once(),
+                        builder: (context, snapshot) {
+                          return Card(
                             elevation: 5.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
                             child: Image.network(
-                              "https://avatars2.githubusercontent.com/u/49792938?s=460&u=8a709ffa10b8cfd08c4561b37c02d17abb70927f&v=4",
+                              snapshot.hasData && snapshot.data.value != null
+                                  ? snapshot.data.value
+                                  : "https://www.mountsinai.on.ca/wellbeing/our-team/team-images/person-placeholder/image",
                               height: 150,
                               width: 150,
                             ),
-                          ),
-                        )
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Card(
-                            elevation: 5.0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Image.network(
-                              "https://pakembsofia.org.pk/wp-content/uploads/person-placeholder.jpg",
-                              height: 150,
-                              width: 150,
-                            ),
-                          ),
-                        ),
+                          );
+                        }),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
@@ -185,22 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 16,
                   ),
                   TextInputComponent(
-                    title: StringConstant.email,
-                    controller: _emailTextEditingConrtroller,
-                    fillColor: ColorConstant.paleGrey,
-                    filled: true,
-                    validator: (value) {
-                      if (value == "") {
-                        return "Email field can't be empty";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  TextInputComponent(
-                    title: "Age (Optional)",
+                    title: "Age",
                     controller: _ageTextEditingConrtroller,
                     fillColor: ColorConstant.paleGrey,
                     inputType: TextInputType.number,
@@ -217,25 +219,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   ButtonComponent(
                     onPressed: () async {
-                      LoaderConstant.loadingpopups(context);
-                      if (_formKey.currentState.validate()) {
-                        try {
-                          databaseReference
-                              .child("users")
-                              .child(_user.uid.toString())
-                              .set({
-                            "fullname": _fullnameTextEditingConrtroller.text,
-                            "mobile_number": _mobileTextEditingConrtroller.text,
-                            "email": _emailTextEditingConrtroller.text,
-                            "age": _ageTextEditingConrtroller.text
-                          });
-                        } catch (ex) {
-                          print(ex);
+                      if (editState) {
+                        LoaderConstant.loadingpopups(context);
+                        if (_formKey.currentState.validate()) {
+                          try {
+                            databaseReference
+                                .child("users")
+                                .child(_user.uid.toString())
+                                .update({
+                              "fullname": _fullnameTextEditingConrtroller.text,
+                              "mobile_number":
+                                  _mobileTextEditingConrtroller.text,
+                              "age": _ageTextEditingConrtroller.text
+                            });
+                            Navigator.pop(context);
+                          } catch (ex) {
+                            Navigator.pop(context);
+                            print(ex);
+                          }
+                        } else {
+                          Navigator.pop(context);
                         }
+                      } else {
+                        setState(() {
+                          editState = true;
+                        });
                       }
-                      Navigator.pop(context);
                     },
-                    buttonText: StringConstant.saveChanges,
+                    buttonText: editState
+                        ? StringConstant.saveChanges
+                        : StringConstant.editProfile,
                     color: ColorConstant.purple,
                     border: 20,
                     textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
