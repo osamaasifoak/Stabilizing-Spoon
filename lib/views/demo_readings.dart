@@ -18,85 +18,55 @@ class _DemoReadingsScreenState extends State<DemoReadingsScreen> {
   String stringJson;
   DateTime selectedDate = new DateTime.now();
   final databaseReference = FirebaseDatabase.instance.reference();
-  User _user = FirebaseAuth.instance.currentUser;
+  // User _user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: Container(
-        height: SizeConfig.screenHeight,
-        width: SizeConfig.screenWidth,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () async {
-                  await FirebaseServices().signOut();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                      (Route<dynamic> route) => false);
-                },
-                child: Container(
-                  child: TextComponent(
-                    text: "logout",
-                    textAlign: TextAlign.left,
-                    textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                        fontSize: 25,
-                        color: ColorConstant.purple,
-                        letterSpacing: 3),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: Container(
-                  width: SizeConfig.screenWidth,
-                  color: ColorConstant.appBlack,
-                  child: Center(
-                    child: InkWell(
-                      onTap: () async {
-                        stringJson = "{\"month\":" +
-                            selectedDate.month.toString() +
-                            ",\"year\":\"" +
-                            selectedDate.year.toString() +
-                            "\",\"date\":\"" +
-                            selectedDate.day.toString() +
-                            "\",\"x\":\"" +
-                            random(1, 100).toString() +
-                            "\",\"y\":\"" +
-                            random(-100, 100).toString() +
-                            "\",\"date_time\":\"" +
-                            selectedDate.toString() +
-                            "\"}";
-                        await databaseReference
-                            .child(_user.uid.toString())
-                            .child(selectedDate.year.toString())
-                            .child(selectedDate.month.toString())
-                            .push()
-                            .set(
-                          {"user_data": stringJson},
-                        );
-                      },
-                      child: TextComponent(
-                        text: "send data",
-                        textAlign: TextAlign.left,
-                        textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
-                            fontSize: 25,
-                            color: ColorConstant.white,
-                            letterSpacing: 3),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+      body: InkWell(
+        onTap: () async {
+          stringJson = "{\"x\":" +
+              random(1, 100).toString() +
+              ",\"y\":\"" +
+              random(-100, 100).toString() +
+              "\"}";
+
+          databaseReference.update({"spoon_value": stringJson});
+
+          // stringJson = "{\"month\":" +
+          //     selectedDate.month.toString() +
+          //     ",\"year\":\"" +
+          //     selectedDate.year.toString() +
+          //     "\",\"date\":\"" +
+          //     selectedDate.day.toString() +
+          //     "\",\"x\":\"" +
+          //     random(1, 100).toString() +
+          //     "\",\"y\":\"" +
+          //     random(-100, 100).toString() +
+          //     "\",\"date_time\":\"" +
+          //     selectedDate.toString() +
+          //     "\"}";
+          // await databaseReference
+          //     .child(_user.uid.toString())
+          //     .child(selectedDate.year.toString())
+          //     .child(selectedDate.month.toString())
+          //     .push()
+          //     .set(
+          //   {"user_data": stringJson},
+          // );
+        },
+        child: Container(
+          height: SizeConfig.screenHeight,
+          width: SizeConfig.screenWidth,
+          color: Colors.black,
+          child: Center(
+            child: TextComponent(
+              text: "",
+              textAlign: TextAlign.left,
+              textStyle: FontStyles.patuaOneCustomFonSizeAndWeight(
+                  fontSize: 25, color: ColorConstant.white, letterSpacing: 3),
+            ),
           ),
         ),
       ),
@@ -109,10 +79,10 @@ class _DemoReadingsScreenState extends State<DemoReadingsScreen> {
   }
 }
 
-class _SalesData {
-  _SalesData(this.year, this.sales, {this.color});
+// class _SalesData {
+//   _SalesData(this.year, this.sales, {this.color});
 
-  final String year;
-  final double sales;
-  final Color color;
-}
+//   final String year;
+//   final double sales;
+//   final Color color;
+// }

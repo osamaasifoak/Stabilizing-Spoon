@@ -176,12 +176,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         .once(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        _fullnameTextEditingConrtroller.text =
-                            snapshot.data.value["fullname"];
-                        _ageTextEditingConrtroller.text =
-                            snapshot.data.value["age"];
-                        _mobileTextEditingConrtroller.text =
-                            snapshot.data.value["mobile_number"];
+                        if (snapshot.data.value != null) {
+                          _fullnameTextEditingConrtroller.text =
+                              snapshot.data.value["fullname"];
+                          _ageTextEditingConrtroller.text =
+                              snapshot.data.value["age"];
+                          _mobileTextEditingConrtroller.text =
+                              snapshot.data.value["mobile_number"];
+                        }
                         return Column(
                           children: [
                             TextInputComponent(

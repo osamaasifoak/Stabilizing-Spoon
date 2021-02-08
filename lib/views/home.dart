@@ -174,13 +174,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (count != 0) {
                         chartsData
                             .add(_SalesData("x", ((sumXvalues / count) * 100)));
-                        chartsData.add(_SalesData(
-                            "stable point", ((sumXvalues - sumYvalues))));
+                        // chartsData.add(_SalesData(
+                        //     "stable point", ((sumXvalues - sumYvalues))));
                         chartsData
                             .add(_SalesData("y", ((sumYvalues / count) * 100)));
                       } else {
                         chartsData.add(_SalesData("x", 0));
-                        chartsData.add(_SalesData("stable point", 0));
+                        // chartsData.add(_SalesData("stable point", 0));
                         chartsData.add(_SalesData("y", 0));
                       }
                     }
@@ -262,9 +262,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      Image.asset(
-                        AssetConstant.happyPana,
-                        height: 200,
+                      Flexible(
+                        child: Image.asset(
+                          AssetConstant.happyPana,
+                          height: 200,
+                        ),
                       ),
                     ],
                   ),

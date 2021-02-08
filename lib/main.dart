@@ -11,6 +11,7 @@ import 'package:react/constants/strings/string_constants.dart';
 import 'package:react/constants/styles/font_styles_constants.dart';
 import 'package:react/routes.dart';
 import 'package:react/services/firebase_services.dart';
+import 'package:react/views/demo_readings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         return onGenerateRoutes(settings);
       },
       home: SplashScreen(),
+      // initialRoute: RouteConstants.splashScreen,
     );
   }
 }
